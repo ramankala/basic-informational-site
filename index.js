@@ -1,40 +1,21 @@
-const http = require('http');
+const express = require('express');
+
+const app = express();
+
 const path = require('path');
 const fs = require('fs');
 
-const server = http.createServer((req, res) => {
-    if (req.url === '/'){
-        fs.readFile(path.join(__dirname, 'public', 'index.html'), (err, content) =>{
-            if (err) throw err;
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(content);
-        });
-    }
-
-    if (req.url === '/about'){
-        fs.readFile(path.join(__dirname, 'public', 'about.html'), (err, content) =>{
-            if (err) throw err;
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(content);
-        });
-    }
-    if (req.url === '/contact-me'){
-        fs.readFile(path.join(__dirname, 'public', 'contact-me.html'), (err, content) =>{
-            if (err) throw err;
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(content);
-        });
-    }
-    else {
-        fs.readFile(path.join(__dirname, 'public', '404.html'), (err, content) => {
-            if (err) throw err;
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(content);
-        })
-    }
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+app.get('/contact-me', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'contact-me.html'));
 });
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
